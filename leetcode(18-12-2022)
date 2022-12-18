@@ -1,0 +1,152 @@
+//Count Pairs Of Similar Strings
+
+Example 1:
+
+Input: words = ["aba","aabb","abcd","bac","aabc"]
+Output: 2
+Explanation: There are 2 pairs that satisfy the conditions:
+- i = 0 and j = 1 : both words[0] and words[1] only consist of characters 'a' and 'b'. 
+- i = 3 and j = 4 : both words[3] and words[4] only consist of characters 'a', 'b', and 'c'. 
+Example 2:
+
+Input: words = ["aabb","ab","ba"]
+Output: 3
+Explanation: There are 3 pairs that satisfy the conditions:
+- i = 0 and j = 1 : both words[0] and words[1] only consist of characters 'a' and 'b'. 
+- i = 0 and j = 2 : both words[0] and words[2] only consist of characters 'a' and 'b'.
+- i = 1 and j = 2 : both words[1] and words[2] only consist of characters 'a' and 'b'.
+Example 3:
+
+Input: words = ["nba","cba","dba"]
+Output: 0
+Explanation: Since there does not exist any pair that satisfies the conditions, we return 0.
+
+
+class Solution {
+    public int similarPairs(String[] words) {
+        int fcount=0;
+        for(int i=0;i<words.length;i++){
+             ArrayList<Character> ans1=solve(words[i],words);
+            //System.out.print(ans1.toString());
+            for(int j=i+1;j<words.length;j++){
+                int val1=0;
+                int val2=0;
+                ArrayList<Character> ans2=solve(words[j],words);
+                
+                for(int k=0;k<ans2.size();k++){
+                    if(!ans1.contains(ans2.get(k)))
+                    {
+                       val1=0;
+                       break;
+                    }
+                    else{
+                        val1=val1+1;
+                    }
+                }
+                
+                for(int k=0;k<ans1.size();k++){
+                    if(!ans2.contains(ans1.get(k)))
+                    {
+                       val2=0;
+                       break;
+                    }
+                    else{
+                        val2=val2+1;
+                    }
+                }
+                if(val1==ans2.size() && val2==ans1.size()){
+                    fcount+=1;
+                    System.out.print(i+" "+j);
+                    System.out.print(ans1.toString());
+                    System.out.print(ans2.toString());
+                
+                System.out.println();
+            }
+            }
+        }
+        return fcount;
+    }
+    public static ArrayList<Character> solve(String str,String[] words){
+        ArrayList<Character> arr= new ArrayList<>();
+            for(int k=0;k<str.length();k++){
+                    if(!arr.contains(str.charAt(k))){
+                        arr.add(str.charAt(k));
+                    }
+                }
+        return arr;
+    }
+}
+
+//Smallest Value After Replacing With Sum of Prime Factors
+
+Input: n = 15
+Output: 5
+Explanation: Initially, n = 15.
+15 = 3 * 5, so replace n with 3 + 5 = 8.
+8 = 2 * 2 * 2, so replace n with 2 + 2 + 2 = 6.
+6 = 2 * 3, so replace n with 2 + 3 = 5.
+5 is the smallest value n will take on.
+  
+
+
+class Solution {
+    public int smallestValue(int n) {
+        while(!isPrime(n)){
+           if(primesum(n)!=n){
+               n=primesum(n);
+           } 
+        else{
+            return n;
+        }
+            
+        }
+        return n;
+    }
+    public static boolean isPrime(int n){
+        for(int i=2;i<n;i++){
+            if(n%i==0){
+                return false;
+            }
+        }
+        return true;
+    }
+    
+    public static int primesum(int n){
+        ArrayList<Integer> ans=new ArrayList<>();
+        int sum=0;
+        int val=n;
+        /*while(n%2==0){
+            ans.add(2);
+            sum=sum+2;
+            n/=2;
+        }
+        
+        for(int i=3;i<Math.sqrt(n);i+=2){
+            while(n%i==0){
+                ans.add(i);
+                sum=sum+i;
+                n/=i;
+            }
+        }
+        
+        if(n>2){
+            ans.add(n);
+            sum=sum+n;
+        }*/
+        int v=2;
+        while(n>1){
+            if(n%v==0){
+                sum=sum+v;
+                ans.add(v);
+                n=n/v;
+            }
+            else{
+                v++;
+            }
+        }
+        
+        //System.out.print(ans.toString());
+        //Collections.sort(ans);
+        return sum;
+        
+}
